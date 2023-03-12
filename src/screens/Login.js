@@ -6,7 +6,7 @@ import Message from '../components/LoadingError/Error';
 import Loading from './../components/LoadingError/Loading';
 import { forgotPass, login, loginGoogle } from "../Redux/Actions/UserAction";
 import { GoogleLogin } from 'react-google-login';
-import {gapi} from 'gapi-script'
+// import { gapi } from 'gapi-script'
 
 const Login = () => {
   window.scrollTo(0, 0);
@@ -17,43 +17,43 @@ const Login = () => {
     email: '',
     password: ''
   });
-  
-  const handleChange = e =>{
+
+  const handleChange = e => {
     e.preventDefault();
-    setData(prev =>{
+    setData(prev => {
       return {
-        ...prev, [e.target.name]: e.target.value 
+        ...prev, [e.target.name]: e.target.value
       }
     })
   }
-  const handleForgotPassword = e =>{
+  const handleForgotPassword = e => {
     e.preventDefault()
     dispatch(forgotPass(email))
   }
-  const {userInfo, loading, error} = useSelector(state => state.userLogin);
-  const {userInfo: userInfoGG , loading: loadingGG, error: errorGG} = useSelector(state => state.userLoginGoogle);
-  const {loading: loadingForgot , error: errorForgot ,success: successForgot ,message} = useSelector(state => state.userForgot);
+  const { userInfo, loading, error } = useSelector(state => state.userLogin);
+  const { userInfo: userInfoGG, loading: loadingGG, error: errorGG } = useSelector(state => state.userLoginGoogle);
+  const { loading: loadingForgot, error: errorForgot, success: successForgot, message } = useSelector(state => state.userForgot);
 
   const responseGoogle = (response) => {
     dispatch(loginGoogle(response));
   }
 
-  useEffect(() =>{
-  function start() {
-      gapi.auth2.init({client_id: '212016326790-5p0pb3fh7m7jpccqa3b2mrm9gqaunq9a.apps.googleusercontent.com'})
-    }
-    gapi.load('client:auth2', start)
-    
-    if(userInfo){
+  useEffect(() => {
+    // function start() {
+    //     gapi.auth2.init({client_id: '212016326790-5p0pb3fh7m7jpccqa3b2mrm9gqaunq9a.apps.googleusercontent.com'})
+    //   }
+    //   gapi.load('client:auth2', start)
+
+    if (userInfo) {
       history.push('/');
     }
   }, [userInfo, userInfoGG, history, dispatch])
 
-  const handleSubmit = e =>{
+  const handleSubmit = e => {
     e.preventDefault();
-    dispatch(login({...data}))
+    dispatch(login({ ...data }))
   }
-  const {email, password} = data;
+  const { email, password } = data;
   return (
     <>
       <Header />
@@ -65,10 +65,10 @@ const Login = () => {
           errorGG && (<Message variant="alert-danger">{errorGG}</Message>)
         }
         {
-          loadingForgot ? (<Loading/>) : errorForgot ? (<Message variant="alert-danger">{errorForgot}</Message>) 
-          : successForgot ? (
-            <Message variant="alert-success">{message}</Message>
-          ) : ''
+          loadingForgot ? (<Loading />) : errorForgot ? (<Message variant="alert-danger">{errorForgot}</Message>)
+            : successForgot ? (
+              <Message variant="alert-success">{message}</Message>
+            ) : ''
         }
         <form className="Login col-md-8 col-lg-4 col-11" onSubmit={handleSubmit}>
           <input type="email" value={email} name="email" onChange={handleChange} placeholder="Email" />
@@ -85,9 +85,9 @@ const Login = () => {
           <p>
             <Link to={"/register"}>Create Account</Link>
           </p>
-          <p style={{marginTop:'10px'}}>
+          <p style={{ marginTop: '10px' }}>
             <Link to='#'>
-              <div onClick={(e)=>handleForgotPassword(e)}>Forgot Your Password ?</div>
+              <div onClick={(e) => handleForgotPassword(e)}>Forgot Your Password ?</div>
             </Link>
           </p>
         </form>

@@ -1,17 +1,20 @@
 import moment from "moment";
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React,{useEffect} from "react";
+import {useDispatch,useSelector} from "react-redux";
 import Header from "../components/Header";
+import Footer from "../components/Footer";
+import CallToActionSection from "../components/homeComponents/CallToActionSection";
+import ContactInfo from "../components/homeComponents/ContactInfo";
 import ProfileTabs from "../components/profileComponents/ProfileTabs";
-import { getUserDetails } from "../Redux/Actions/UserAction";
+import {getUserDetails} from "../Redux/Actions/UserAction";
 import Orders from "./../components/profileComponents/Orders";
-const ProfileScreen = () => {
-  const dispatch = useDispatch();
-  const {userInfo} = useSelector(state => state.userLogin);
-  const {orders} = useSelector(state => state.orderMyList)
-  useEffect(() =>{
+const ProfileScreen=() => {
+  const dispatch=useDispatch();
+  const {userInfo}=useSelector(state => state.userLogin);
+  const {orders}=useSelector(state => state.orderMyList)
+  useEffect(() => {
     dispatch(getUserDetails());
-  }, [dispatch])
+  },[dispatch])
   return (
     <>
       <Header />
@@ -65,7 +68,7 @@ const ProfileScreen = () => {
                     aria-selected="false"
                   >
                     Orders List
-                    <span className="badge2">{orders && orders.length}</span>
+                    <span className="badge2">{orders&&orders.length}</span>
                   </button>
                 </div>
               </div>
@@ -96,6 +99,9 @@ const ProfileScreen = () => {
           </div>
         </div>
       </div>
+      <CallToActionSection />
+      <ContactInfo />
+      <Footer />
     </>
   );
 };

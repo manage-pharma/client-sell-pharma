@@ -1,8 +1,10 @@
 import React from "react";
 
-const Footer = () => {
+const Footer = (props) => {
+  const {companyName,companyAddress,links,contacts,qrCode }=props
   return (
     <div className="footer">
+      <p>{JSON.stringify(props)}</p>
       <div className="justify-content-center d-flex">
         <div className="card-name">
           <img

@@ -1,69 +1,69 @@
-import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import React,{useEffect,useState} from "react";
+import {Link,useParams} from "react-router-dom";
 import Header from "./../components/Header";
-import { PayPalButton } from "react-paypal-button-v2";
-import { useDispatch, useSelector } from "react-redux";
-import { getOrderDetails, payOrder } from "../Redux/Actions/OrderAction";
+import {PayPalButton} from "react-paypal-button-v2";
+import {useDispatch,useSelector} from "react-redux";
+import {getOrderDetails,payOrder} from "../Redux/Actions/OrderAction";
 import Loading from "../components/LoadingError/Loading";
 import Message from "../components/LoadingError/Error";
 import moment from "moment";
 import axios from "axios";
-import { ORDER_PAY_RESET } from "../Redux/Constants/OrderConstant";
-const OrderScreen = () => {
-  window.scrollTo(0, 0);
-  const { loading, error, order } = useSelector(state => state.orderDetails); 
-  const { id: idParam } = useParams();
-  const dispatch = useDispatch();
+import {ORDER_PAY_RESET} from "../Redux/Constants/OrderConstant";
+const OrderScreen=() => {
+  window.scrollTo(0,0);
+  const {loading,error,order}=useSelector(state => state.orderDetails);
+  const {id: idParam}=useParams();
+  const dispatch=useDispatch();
 
-  const [sdkReady, setSdkReady] = useState(true);
-  const { loading: loadingPay, error: errorPay, success } = useSelector(state => state.orderPay);
-  if(!loading && !error){
-    order.itemsPrice = order.orderItems.reduce((sum, current) => sum + current.price * current.qty, 0).toFixed(2);
+  const [sdkReady,setSdkReady]=useState(true);
+  const {loading: loadingPay,error: errorPay,success}=useSelector(state => state.orderPay);
+  if(!loading&&!error) {
+    order.itemsPrice=order.orderItems.reduce((sum,current) => sum+current.price*current.qty,0).toFixed(2);
   }
   useEffect(() => {
-    const addPaypal = async () =>{
-      const {data: clientId} = await axios.get('/api/config/paypal');
-      const script = document.createElement('script');
-      script.type = 'text/javascript';
-      script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`;
-      script.async = true;
-      script.onload = () =>{
+    const addPaypal=async () => {
+      const {data: clientId}=await axios.get('/api/config/paypal');
+      const script=document.createElement('script');
+      script.type='text/javascript';
+      script.src=`https://www.paypal.com/sdk/js?client-id=${clientId}`;
+      script.async=true;
+      script.onload=() => {
         setSdkReady(true)
       }
       document.body.appendChild(script);
     }
     // chưa có thông tin order hoặc success là true (cập nhật lại orderDetail)
-    if(!order || success){
+    if(!order||success) {
       dispatch({type: ORDER_PAY_RESET})
-      dispatch(getOrderDetails(idParam));  
+      dispatch(getOrderDetails(idParam));
     }
     // chưa trả
-    else if(!order.isPaid){
+    else if(!order.isPaid) {
       //chưa hiện button paypal thì hiện còn không thì setSdkReady(true)
-      if(!window.paypal){
+      if(!window.paypal) {
         addPaypal();
       }
-      else{
+      else {
         setSdkReady(true);
       }
     }
     // trả rồi
-    else if(order.isPaid){
+    else if(order.isPaid) {
       setSdkReady(false);
     }
-    
-  }, [dispatch, idParam, success, order])
-  
-  const successPaymentHandler = paymentResult  => {
-    dispatch(payOrder(idParam, paymentResult));
+
+  },[dispatch,idParam,success,order])
+
+  const successPaymentHandler=paymentResult => {
+    dispatch(payOrder(idParam,paymentResult));
   }
   return (
     <>
       <Header />
       <div className="container">
         {
-          loading ? (<Loading />) : error ? (<Message>{error}</Message>)
-            : order ?
+          loading? (<Loading />):error? (<Message>{error}</Message>)
+            :order?
               (
                 <>
                   <div className="row  order-detail">
@@ -101,7 +101,7 @@ const OrderScreen = () => {
                           <p>Pay method: {order.paymentMethod}</p>
 
                           {
-                            order.isPaid ? (
+                            order.isPaid? (
                               <div className="bg-info p-2 col-12">
                                 <p className="text-white text-center text-sm-start">
                                   Paid on
@@ -110,7 +110,7 @@ const OrderScreen = () => {
                                   }
                                 </p>
                               </div>
-                            ) :
+                            ):
                               (
                                 <div className="bg-danger p-2 col-12">
                                   <p className="text-white text-center text-sm-start">
@@ -138,10 +138,10 @@ const OrderScreen = () => {
                             Address: {order.shippingAddress.address}
                           </p>
                           {
-                            order.isDelivered ? (
-                              <div className="bg-danger p-1 col-12">
+                            order.isDelivered? (
+                              <div className="bg-info p-1 col-12">
                                 <p className="text-white text-center text-sm-start">
-                                  Delivered 
+                                  Delivered
                                 </p>
                               </div>
                             )
@@ -163,11 +163,11 @@ const OrderScreen = () => {
                     <div className="col-lg-8">
 
                       {
-                        order.orderItems.map((order, index) => {
+                        order.orderItems.map((order,index) => {
                           return (
                             <div key={index} className="order-product row">
                               <div className="col-md-3 col-6">
-                                <img src={order.image} alt="product" />
+                                <img src={order?.image?.slice(0,0+1)[0]} alt="product" />
                               </div>
                               <div className="col-md-5 col-6 d-flex align-items-center">
                                 <Link to={`/`}>
@@ -180,7 +180,7 @@ const OrderScreen = () => {
                               </div>
                               <div className="mt-3 mt-md-0 col-md-2 col-6 align-items-end  d-flex flex-column justify-content-center">
                                 <h4>SUBTOTAL</h4>
-                                <h6>${order.price * order.qty}</h6>
+                                <h6>${order.price*order.qty}</h6>
                               </div>
 
 
@@ -223,19 +223,19 @@ const OrderScreen = () => {
                       </table>
                       <div className="col-12">
                         {
-                          loadingPay ? (<Loading />) : errorPay ? (<Message>{error}</Message>)
-                          :
-                          (
-                            !sdkReady ? (<div className="paid-button"><p>PAID</p></div>)
+                          loadingPay? (<Loading />):errorPay? (<Message>{error}</Message>)
                             :
-                            <PayPalButton amount={order.totalPrice} onSuccess={successPaymentHandler} />
-                          )
+                            (
+                              !sdkReady? (<div className="paid-button"><p>PAID</p></div>)
+                                :
+                                <PayPalButton amount={order.totalPrice} onSuccess={successPaymentHandler} />
+                            )
                         }
                       </div>
                     </div>
                   </div>
                 </>
-              ) : ''
+              ):''
         }
       </div>
     </>

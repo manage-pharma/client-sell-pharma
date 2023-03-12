@@ -6,10 +6,26 @@ import { cartReducer } from './Reducers/CartReducer.js';
 import { themeReducer } from './Reducers/ThemeReducer.js'
 import { userChangeProfileReducer, userConfirmForgotReducer, userConfirmRegisterReducer, userDetailsReducer, userForgotReducer, userLoginGGReducer, userLoginReducer, userRegisterReducer, userUpdateProfileReducer } from './Reducers/UserReducer.js';
 import { orderCreateReducer, orderDetailsReducer, orderListMyReducer, orderPayReducer} from './Reducers/OrderReducer';
+import {drugstoreAllReducer, drugstoreCategoriesDrugReducer, drugstoreCategoriesReducer, drugstoreImportReducer, drugstoreSingleReducer, drugstoreUpdateReducer, drugstoreListReducer} from "./Reducers/DrugStoreReducers";
+import {contentSingleReducer} from './Reducers/ContentReducer';
 import { categoryListReducer } from './Reducers/CategoryReducer';
 const reducer = combineReducers({
+
+    contentSingle: contentSingleReducer,
+
     productList: producerListReducer,
     productDetails: productDetailsReducer,
+
+
+
+    drugstoreList: drugstoreListReducer,
+    drugstoreAll: drugstoreAllReducer,
+    drugstoreSingle: drugstoreSingleReducer,
+    drugstoreCategories: drugstoreCategoriesReducer,
+    drugstoreCategoriesDrug: drugstoreCategoriesDrugReducer,
+    drugstoreUpdate: drugstoreUpdateReducer,
+    drugstoreImport: drugstoreImportReducer,
+
     productReview: productCreateReviewReducer,
     cart: cartReducer,
     theme: themeReducer,

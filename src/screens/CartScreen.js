@@ -1,13 +1,14 @@
 import React from 'react';
 import Header from './../components/Header';
-import { Link } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import { addToCart, removeFromCart } from '../Redux/Actions/CartAction';
+import {Link} from 'react-router-dom';
+import {useSelector,useDispatch} from 'react-redux';
+import {addToCart,removeFromCart} from '../Redux/Actions/CartAction';
 
-const CartScreen = () => {
-  window.scrollTo(0, 0);
-  const { cartItems } = useSelector((state) => state.cart);
-  const dispatch = useDispatch();
+const CartScreen=() => {
+  window.scrollTo(0,0);
+  const {cartItems}=useSelector((state) => state.cart);
+  console.log(cartItems)
+  const dispatch=useDispatch();
   return (
     <>
       <Header />
@@ -19,7 +20,7 @@ const CartScreen = () => {
             {cartItems.length}
           </Link>
         </div>
-        {cartItems.map((item, index) => {
+        {cartItems.map((item,index) => {
           return (
             <div key={index}>
               <div className="cart-item row">
@@ -30,7 +31,7 @@ const CartScreen = () => {
                   <i className="fas fa-times"></i>
                 </div>
                 <div className="cart-image col-md-3">
-                  <img src={`${item.image}`} alt="nike" />
+                  <img src={`${item?.image?.slice(0,0+1)[0]}`} alt="nike" />
                 </div>
                 <div className="cart-text col-md-5 d-flex align-items-center">
                   <Link to="#">
@@ -42,25 +43,25 @@ const CartScreen = () => {
                   <select
                     value={item.qty}
                     onChange={(e) =>
-                      dispatch(addToCart(item.product, Number(e.target.value)))
+                      dispatch(addToCart(item.product,Number(e.target.value)))
                     }
                   >
                     {[...Array(item.countInStock).keys()].map((x) => (
-                      <option key={x + 1} value={x + 1}>
-                        {x + 1}
+                      <option key={x+1} value={x+1}>
+                        {x+1}
                       </option>
                     ))}
                   </select>
                 </div>
                 <div className="cart-price mt-3 mt-md-0 col-md-2 align-items-sm-end align-items-start  d-flex flex-column justify-content-center col-sm-7">
                   <h6>SUBTOTAL</h6>
-                  <h4>${item.qty * item.price}</h4>
+                  <h4>${item.qty*item.price}</h4>
                 </div>
               </div>
             </div>
           );
         })}
-        {cartItems.length === 0 ? (
+        {cartItems.length===0? (
           <div className="container">
             <div className=" alert alert-info text-center mt-3">
               Your cart is empty
@@ -75,15 +76,15 @@ const CartScreen = () => {
               </Link>
             </div>
           </div>
-        ) : (
+        ):(
           ''
         )}
-        
+
         {/* End of cart items */}
         <div className="total">
           <span className="sub">total:</span>
           <span className="total-price">
-          ${cartItems.reduce((sum, curr) => sum + curr.price * curr.qty, 0)}
+            ${cartItems.reduce((sum,curr) => sum+curr.price*curr.qty,0)}
           </span>
         </div>
         <hr />
