@@ -1,16 +1,29 @@
 import React,{useEffect} from 'react'
+import {useDispatch,useSelector} from "react-redux";
+import {singleContent} from "../Redux/Actions/ContentAction.js"
 import {Navigation,Pagination} from 'swiper';
-
-
-
 import {Swiper,SwiperSlide,useSwiper} from 'swiper/react';
 
 import 'swiper/swiper.min.css';
 import 'swiper/modules/navigation/navigation.min.css';
 
-const Banner=(props) => {
+const Banner=() => {
+    
     const swiper=useSwiper();
-    const {banners}=props
+    const dispatch = useDispatch();
+
+    const contentSingle=useSelector((state) => state.contentSingle)
+    const {contentUp}=contentSingle
+    const data = Object.assign({}, contentUp[0]);
+    const {banners}=data
+   
+    
+    
+
+    useEffect(()=>{
+        dispatch(singleContent())
+    }, [dispatch])
+    
 
     return (
         <div className="container-fluid">
@@ -21,38 +34,14 @@ const Banner=(props) => {
                         <Swiper
                             className="w-100 h-100"
                             modules={[Navigation,Pagination]}
-                            //pagination={{
-                            //    type: "fraction",
-                            //}}
                             spaceBetween={20}
                             slidesPerView={1}
-
-                            //breakpoints={{
-                            //    0: {
-                            //    slidesPerView: 1,
-                            //    },
-                            //    520: {
-                            //    slidesPerView: 2,
-                            //    },
-                            //    768: {
-                            //    slidesPerView: 3,
-                            //    },
-                            //    1000: {
-                            //    slidesPerView: 5,
-                            //    }
-                        
-                            //}
-                                
-                            //}
                             navigation={true}
-                            //onSlideChange={() => console.log('slide change')}
-                            //onSwiper={(swiper) => console.log(swiper)}
-
                         >
                         {banners?.map((banner)=>{
                             return(
                                 <SwiperSlide>
-                                  <img src="images/banner2.jpg" className="w-100"  style={{height:"300px"}}/>
+                                  <img src={"images/banner2.jpg"} className="w-100"  style={{height:"300px"}}/>
                                 </SwiperSlide>
                             )
                         })}    
@@ -71,6 +60,18 @@ const Banner=(props) => {
                 </div>
             </div>
         </div>
+        //<div>{contentUp[0]?.banner?.map((item, index)=>{
+        //    return(
+        //        <>
+        //            <img
+        //             src={item?.image}
+        //                alt="User"
+        //            />   
+        //            <div>BANNER{index+1}</div>
+        //        </>
+        //    )
+    
+        // })}</div>
 
     )
 }

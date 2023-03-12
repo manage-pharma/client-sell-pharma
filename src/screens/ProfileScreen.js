@@ -15,6 +15,7 @@ const ProfileScreen=() => {
   useEffect(() => {
     dispatch(getUserDetails());
   },[dispatch])
+  console.log(userInfo)
   return (
     <>
       <Header />

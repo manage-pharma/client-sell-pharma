@@ -15,9 +15,11 @@ export const singleContent = () => async (dispatch, getState) => {
       headers: {
         Authorization: `Bearer ${userInfo.token}`,
       },
-    };
+    }; // ta
 
-    const { data } = await axios.get(`/api/content/6408318fdd23c1aca7a65201`, config);
+    const { data } = await axios.get(`/api/content`, config);
+    console.log("data",data);
+
     dispatch({ type: CONTENT_SINGLE_SUCCESS, payload: data });
   } catch (error) {
     const message =

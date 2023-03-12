@@ -1,10 +1,21 @@
-import React from "react";
+import React,{useEffect} from "react";
+import {useDispatch,useSelector} from "react-redux";
+import {singleContent} from "../Redux/Actions/ContentAction.js"
 
-const Footer = (props) => {
-  const {companyName,companyAddress,links,contacts,qrCode }=props
+const Footer = () => {
+  const dispatch=useDispatch()
+  const contentSingle=useSelector((state) => state.contentSingle)
+  const {contentUp}=contentSingle
+  //console.log(contentUp)
+  const {logo,phone,banners,companyName,companyAddress,links,contacts,qrCode}=contentUp
+
+
+  useEffect(()=>{
+      dispatch(singleContent())
+  },[dispatch])
   return (
     <div className="footer">
-      <p>{JSON.stringify(props)}</p>
+      <p>{JSON.stringify({...contentUp})}</p>
       <div className="justify-content-center d-flex">
         <div className="card-name">
           <img

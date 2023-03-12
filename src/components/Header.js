@@ -8,9 +8,11 @@ import Modal from 'react-bootstrap/Modal';
 import debounce from "lodash.debounce";
 import {USER_FORGOT_RESET,USER_REGISTER_RESET} from "../Redux/Constants/UserConstant";
 import {listCategory} from './../Redux/Actions/CategoryAction';
-const Header=(props) => {
-  //console.log("header",props)
-  const {logo ,phone}=props;
+
+
+import {singleContent} from "../Redux/Actions/ContentAction.js"
+const Header=() => {
+  
   const MyVerticallyCenteredModal=(props) => {
     return (
       <Modal
@@ -41,6 +43,14 @@ const Header=(props) => {
   const [keyword,setKeyword]=useState()
   const dispatch=useDispatch();
   const history=useHistory();
+  const contentSingle=useSelector((state) => state.contentSingle)
+  const {contentUp}=contentSingle
+
+  const content = Object.assign({}, contentUp[0]);
+  const {logo, phone}=content
+  //console.log(contentUp)
+  //const {logo,phone,banners,companyName,companyAddress,links,contacts,qrCode}=contentUp
+
 
   const data=useSelector((state) => state.theme)
   const {cartItems}=useSelector(state => state.cart);
@@ -77,6 +87,7 @@ const Header=(props) => {
   useEffect(() => {
     dispatch(listCategory())
     dispatch(getUserDetails())
+    dispatch(singleContent())
   },[dispatch])
   return (
     <div>
